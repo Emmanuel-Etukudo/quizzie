@@ -17,7 +17,7 @@ class Question extends Equatable{
     required this.difficulty,
     required this.question,
     required this.correctAnswer,
-    required this.incorrectAnswers,
+    required this.answers,
   });
 
   final String category;
@@ -25,17 +25,19 @@ class Question extends Equatable{
   final String difficulty;
   final String question;
   final String correctAnswer;
-  final List<String> incorrectAnswers;
+  final List<String> answers;
 
   factory Question.fromMap(Map<String, dynamic> json) {
     //if (json == null) return null;
     return Question(
-    category: json["category"],
-    type: json["type"],
-    difficulty: json["difficulty"],
-    question: json["question"],
-    correctAnswer: json["correct_answer"],
-    incorrectAnswers: List<String>.from(json["incorrect_answers"].map((x) => x)),
+    category: json["category"]?? '',
+    type: json["type"]?? '',
+    difficulty: json["difficulty"]?? '',
+    question: json["question"]?? '',
+    correctAnswer: json["correct_answer"]?? '',
+    answers: List<String>.from(json["incorrect_answers"]?? [])
+      ..add(json["correct_answer"]?? '')
+      ..shuffle(),
   );
   }
 
@@ -45,7 +47,7 @@ class Question extends Equatable{
     "difficulty": difficulty,
     "question": question,
     "correct_answer": correctAnswer,
-    "incorrect_answers": List<dynamic>.from(incorrectAnswers.map((x) => x)),
+    "incorrect_answers": List<dynamic>.from(answers.map((x) => x)),
   };
 
   @override
@@ -54,6 +56,6 @@ class Question extends Equatable{
     difficulty,
     question,
     correctAnswer,
-    incorrectAnswers
+    answers
   ];
 }
